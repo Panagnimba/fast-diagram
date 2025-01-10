@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as go from "gojs";
+import "./diagramEditor.css"
 
 const DiagramEditor = () => {
   const diagramRef = useRef(null);
   const paletteRef = useRef(null);
   const [modelData, setModelData] = useState("");
-  const [myDiagram,setMyDiagram] = useState(null)
+  const [myDiagram, setMyDiagram] = useState(null)
 
   useEffect(() => {
     const $ = go.GraphObject.make;
@@ -24,95 +25,95 @@ const DiagramEditor = () => {
     //
     setMyDiagram(diagram)
     // Node Template with Reduced Size and Improved Aesthetics
-diagram.nodeTemplate = $(
-    go.Node,
-    "Spot", // Use Spot Panel for precise port placement
-    {
-      locationSpot: go.Spot.Center,
-      resizable: true, // Allow nodes to be resized dynamically
-      resizeObjectName: "SHAPE", // Resize the shape, not the whole node
-    },
-    new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
-    // Main Shape with Dynamic Sizing and Styling
-    $(
-      go.Shape,
-      "RoundedRectangle",
+    diagram.nodeTemplate = $(
+      go.Node,
+      "Spot", // Use Spot Panel for precise port placement
       {
-        name: "SHAPE", // Referenced for resizing
-        fill: $(go.Brush, "Linear", { 0: "white", 1: "lightblue" }), // Gradient fill
-        strokeWidth: 1,
-        stroke: "gray", // Border color
+        locationSpot: go.Spot.Center,
+        resizable: true, // Allow nodes to be resized dynamically
+        resizeObjectName: "SHAPE", // Resize the shape, not the whole node
       },
-      new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify) // Dynamic sizing
-    ),
-    // TextBlock for Node Label
-    $(
-      go.TextBlock,
-      {
-        margin: 5,
-        editable: true, // Allow inline editing
-        font: "bold 12px sans-serif", // Better font for aesthetics
-        wrap: go.TextBlock.WrapFit, // Wrap text if it's too long
-        textAlign: "center",
-        overflow: go.TextBlock.OverflowEllipsis, // Add ellipsis for long text
-      },
-      new go.Binding("text", "name").makeTwoWay()
-    ),
-    // Port at Top-Left Corner
-    $(go.Shape, "Circle", {
-      width: 6,
-      height: 6,
-      fill: "blue",
-      portId: "TL",
-      fromLinkable: true,
-      toLinkable: true,
-      cursor: "pointer",
-      fromSpot: go.Spot.TopLeft,
-      toSpot: go.Spot.TopLeft,
-      alignment: go.Spot.TopLeft,
-    }),
-    // Port at Top-Right Corner
-    $(go.Shape, "Circle", {
-      width: 6,
-      height: 6,
-      fill: "blue",
-      portId: "TR",
-      fromLinkable: true,
-      toLinkable: true,
-      cursor: "pointer",
-      fromSpot: go.Spot.TopRight,
-      toSpot: go.Spot.TopRight,
-      alignment: go.Spot.TopRight,
-    }),
-    // Port at Bottom-Left Corner
-    $(go.Shape, "Circle", {
-      width: 6,
-      height: 6,
-      fill: "blue",
-      portId: "BL",
-      fromLinkable: true,
-      toLinkable: true,
-      cursor: "pointer",
-      fromSpot: go.Spot.BottomLeft,
-      toSpot: go.Spot.BottomLeft,
-      alignment: go.Spot.BottomLeft,
-    }),
-    // Port at Bottom-Right Corner
-    $(go.Shape, "Circle", {
-      width: 6,
-      height: 6,
-      fill: "blue",
-      portId: "BR",
-      fromLinkable: true,
-      toLinkable: true,
-      cursor: "pointer",
-      fromSpot: go.Spot.BottomRight,
-      toSpot: go.Spot.BottomRight,
-      alignment: go.Spot.BottomRight,
-    })
-  );
-  
-  
+      new go.Binding("location", "location", go.Point.parse).makeTwoWay(go.Point.stringify),
+      // Main Shape with Dynamic Sizing and Styling
+      $(
+        go.Shape,
+        "RoundedRectangle",
+        {
+          name: "SHAPE", // Referenced for resizing
+          fill: $(go.Brush, "Linear", { 0: "white", 1: "lightblue" }), // Gradient fill
+          strokeWidth: 1,
+          stroke: "gray", // Border color
+        },
+        new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify) // Dynamic sizing
+      ),
+      // TextBlock for Node Label
+      $(
+        go.TextBlock,
+        {
+          margin: 5,
+          editable: true, // Allow inline editing
+          font: "bold 12px sans-serif", // Better font for aesthetics
+          wrap: go.TextBlock.WrapFit, // Wrap text if it's too long
+          textAlign: "center",
+          overflow: go.TextBlock.OverflowEllipsis, // Add ellipsis for long text
+        },
+        new go.Binding("text", "name").makeTwoWay()
+      ),
+      // Port at Top-Left Corner
+      $(go.Shape, "Circle", {
+        width: 6,
+        height: 6,
+        fill: "blue",
+        portId: "TL",
+        fromLinkable: true,
+        toLinkable: true,
+        cursor: "pointer",
+        fromSpot: go.Spot.TopLeft,
+        toSpot: go.Spot.TopLeft,
+        alignment: go.Spot.TopLeft,
+      }),
+      // Port at Top-Right Corner
+      $(go.Shape, "Circle", {
+        width: 6,
+        height: 6,
+        fill: "blue",
+        portId: "TR",
+        fromLinkable: true,
+        toLinkable: true,
+        cursor: "pointer",
+        fromSpot: go.Spot.TopRight,
+        toSpot: go.Spot.TopRight,
+        alignment: go.Spot.TopRight,
+      }),
+      // Port at Bottom-Left Corner
+      $(go.Shape, "Circle", {
+        width: 6,
+        height: 6,
+        fill: "blue",
+        portId: "BL",
+        fromLinkable: true,
+        toLinkable: true,
+        cursor: "pointer",
+        fromSpot: go.Spot.BottomLeft,
+        toSpot: go.Spot.BottomLeft,
+        alignment: go.Spot.BottomLeft,
+      }),
+      // Port at Bottom-Right Corner
+      $(go.Shape, "Circle", {
+        width: 6,
+        height: 6,
+        fill: "blue",
+        portId: "BR",
+        fromLinkable: true,
+        toLinkable: true,
+        cursor: "pointer",
+        fromSpot: go.Spot.BottomRight,
+        toSpot: go.Spot.BottomRight,
+        alignment: go.Spot.BottomRight,
+      })
+    );
+
+
 
     // Link Template
     diagram.linkTemplate = $(
@@ -162,31 +163,26 @@ diagram.nodeTemplate = $(
     };
   }, []);
 
-  function exportDiagram(){
+  function exportDiagram() {
     const imageData = myDiagram.makeImage({
-        scale: 1,
-        background: "white",
-        type: "image/jpeg",
-        details: 1
-      });
+      scale: 1,
+      background: "white",
+      type: "image/jpeg",
+      details: 1
+    });
 
-        // Create a temporary link element to download the image
+    // Create a temporary link element to download the image
     const link = document.createElement("a");
     link.href = imageData.src; // Set href to the image data
     link.download = "diagram.png"; // Set the desired filename
     link.click(); // Trigger the download
   }
   return (
-    <div style={{ display: "flex" }}>
+    <div className="editor-wrap">
       {/* Palette */}
       <div
         ref={paletteRef}
-        style={{
-          width: "200px",
-          height: "600px",
-          border: "1px solid black",
-          marginRight: "10px",
-        }}
+        className="editor"
       ></div>
 
       {/* Diagram */}
@@ -198,8 +194,12 @@ diagram.nodeTemplate = $(
           border: "1px solid black",
         }}
       ></div>
+      <select name="" id="" className="export-option-btn">
+        <option value="" disabled>Exportation</option>
+        <option value="" onClick={() => exportDiagram()} >Export Pdf</option>
+        <option value="" onClick={() => exportDiagram()} >Export Image</option>
+      </select >
 
-      <button onClick={()=>exportDiagram()}>export</button>
     </div>
   );
 };

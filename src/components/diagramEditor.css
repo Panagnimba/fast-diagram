@@ -1,0 +1,18 @@
+.editor-wrap{
+    display: flex;
+    height: 100%;
+}
+
+.editor{
+
+        width: 200px;
+        height: 100%;    
+}
+.export-option-btn{
+position: absolute;
+top: 80px;
+right: 25px;
+z-index: 1000;
+padding: 5px 8px;
+outline: none;
+}

@@ -42,7 +42,7 @@ const Register = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button variant="contained" color="primary" onClick={handleSignup}>
+      <Button variant="contained" color="primary" onClick={handleSignup} style={{width: 400,padding: 10, marginTop: 10}}>
         Sign Up
       </Button>
     </div>

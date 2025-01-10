@@ -40,7 +40,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button variant="contained" color="primary" onClick={handleLogin}>
+      <Button variant="contained" color="primary" onClick={handleLogin} style={{width: 400,padding: 10, marginTop: 10}}>
         Login
       </Button>
     </div>
