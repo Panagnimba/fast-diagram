@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as go from "gojs";
+import { jsPDF } from 'jspdf';
 import "./diagramEditor.css"
 
 const DiagramEditor = () => {
@@ -43,9 +44,11 @@ const DiagramEditor = () => {
           fill: $(go.Brush, "Linear", { 0: "white", 1: "lightblue" }), // Gradient fill
           strokeWidth: 1,
           stroke: "gray", // Border color
+          desiredSize: new go.Size(100, 50) // Set default size to 100px by 100px
         },
         new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify) // Dynamic sizing
       ),
+
       // TextBlock for Node Label
       $(
         go.TextBlock,
@@ -163,7 +166,65 @@ const DiagramEditor = () => {
     };
   }, []);
 
-  function exportDiagram() {
+  function exportDiagram(format) {
+    switch (format) {
+      case 'pdf':
+        exportAsPDF();
+        break;
+      case 'jpeg':
+        exportAsImage('image/jpeg');
+        break;
+      case 'png':
+        exportAsImage('image/png');
+        break;
+      case 'svg':
+        exportAsSVG();
+        break;
+      case 'spreadsheet':
+        exportAsSpreadsheet();
+        break;
+      default:
+        console.error("Unsupported format: " + format);
+    }
+  }
+
+  function exportAsImage(type) {
+    const imageData = myDiagram.makeImage({
+      scale: 1,
+      background: "white",
+      type: type,
+      details: 1
+    });
+
+    const link = document.createElement("a");
+    link.href = imageData.src; // Set href to the image data
+    link.download = `diagram.${type === 'image/jpeg' ? 'jpeg' : 'png'}`; // Set the desired filename
+    link.click(); // Trigger the download
+  }
+
+  function exportAsSVG() {
+    const svgData = myDiagram.makeSvg({
+      scale: 1,
+      background: "white"
+    });
+
+    const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url; // Set href to the SVG blob URL
+    link.download = "diagram.svg"; // Set the desired filename
+    link.click(); // Trigger the download
+
+    // Clean up the URL object after use
+    URL.revokeObjectURL(url);
+  }
+
+  function exportAsPDF() {
+    // Assuming you have a library like jsPDF or pdf-lib for PDF generation
+    const pdfDoc = new jsPDF();
+
+    // Create an image from the diagram
     const imageData = myDiagram.makeImage({
       scale: 1,
       background: "white",
@@ -171,12 +232,28 @@ const DiagramEditor = () => {
       details: 1
     });
 
-    // Create a temporary link element to download the image
+    pdfDoc.addImage(imageData.src, 'JPEG', 10, 10); // Add the image to the PDF at position (10,10)
+
+    pdfDoc.save("diagram.pdf"); // Save the PDF with the desired filename
+  }
+
+  function exportAsSpreadsheet() {
+    // Convert your diagram data into a format suitable for spreadsheets (like CSV)
+
+    const csvContent = "data:text/csv;charset=utf-8,"
+      + "Node Name,Node Type\n"
+      + myDiagram.model.nodeDataArray.map(node => `${node.name},${node.type}`).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+
     const link = document.createElement("a");
-    link.href = imageData.src; // Set href to the image data
-    link.download = "diagram.png"; // Set the desired filename
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "diagram.csv"); // Set the desired filename
+    document.body.appendChild(link); // Required for Firefox
+
     link.click(); // Trigger the download
   }
+
   return (
     <div className="editor-wrap">
       {/* Palette */}
@@ -194,11 +271,24 @@ const DiagramEditor = () => {
           border: "1px solid black",
         }}
       ></div>
-      <select name="" id="" className="export-option-btn">
-        <option value="" disabled>Exportation</option>
-        <option value="" onClick={() => exportDiagram()} >Export Pdf</option>
-        <option value="" onClick={() => exportDiagram()} >Export Image</option>
-      </select >
+      <select
+        id="export-options"
+        className="export-option-btn"
+        onChange={(e) => {
+          const format = e.target.value;
+          if (format) {
+            exportDiagram(format);
+            e.target.value = ""; // Reset the select box after selection
+          }
+        }}
+      >
+        <option value="" disabled selected>Select an option</option>
+        <option value="pdf">Export as PDF</option>
+        <option value="png">Export as png</option>
+        <option value="jpeg">Export as jpeg</option>
+        <option value="svg">Export as svg</option>
+        <option value="spreadsheet">Spreadsheet format</option>
+      </select>
 
     </div>
   );

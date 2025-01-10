@@ -24,7 +24,7 @@ const Register = () => {
 
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", padding: 20 }}>
+    <div style={{ maxWidth: 400, margin: "0 auto", padding: 20, height:"1000px" }}>
       <h2>Sign Up</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <TextField
