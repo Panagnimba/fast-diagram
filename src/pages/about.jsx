@@ -55,6 +55,14 @@ const AboutUs = () => {
             <Typography variant="body2">Saif ensures that our products meet the highest quality standards through rigorous testing.</Typography>
           </Box>
         </Grid>
+
+        <Grid item xs={12} sm={6} md={4}>
+          <Box border={1} borderRadius={2} padding={2} textAlign="center">
+            <Typography variant="h6">Mousahli Badr</Typography>
+            <Typography variant="body2">Backend Developer</Typography>
+            <Typography variant="body2">Badr focuses on creating intuitive user interfaces and enhancing user experience.</Typography>
+          </Box>
+        </Grid>
       </Grid>
 
       <Box mt={4}>
